@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>儿童英语背单词</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div id="app">
+    <!-- 首页 -->
+    <div id="home-page" class="page active">
+      <h1>🎮 儿童英语背单词</h1>
+      <div class="menu">
+        <button class="btn primary" onclick="showPage('study')">开始背诵</button>
+        <button class="btn secondary" onclick="showPage('words')">单词管理</button>
+        <button class="btn secondary" onclick="showPage('settings')">学习设置</button>
+      </div>
+    </div>
+
+    <!-- 单词管理页 -->
+    <div id="words-page" class="page">
+      <div class="header">
+        <button class="btn back" onclick="showPage('home')">← 返回</button>
+        <h2>单词管理</h2>
+        <button class="btn add" onclick="showAddWordModal()">+ 添加</button>
+      </div>
+      <div id="words-list" class="words-list"></div>
+    </div>
+
+    <!-- 设置页 -->
+    <div id="settings-page" class="page">
+      <div class="header">
+        <button class="btn back" onclick="showPage('home')">← 返回</button>
+        <h2>学习设置</h2>
+      </div>
+      <div class="settings-form">
+        <div class="form-group">
+          <label>连续正确几次后不再抽查</label>
+          <input type="number" id="correct-threshold" min="1" max="10" value="3">
+          <span class="hint">范围: 1-10 次</span>
+        </div>
+        <div class="form-group">
+          <label>每次等待背诵时间 (秒)</label>
+          <input type="number" id="wait-time" min="1" max="30" value="3">
+          <span class="hint">范围: 1-30 秒</span>
+        </div>
+        <button class="btn primary" onclick="saveSettings()">保存设置</button>
+      </div>
+    </div>
+
+    <!-- 背诵页 -->
+    <div id="study-page" class="page">
+      <div class="header">
+        <button class="btn back" onclick="showPage('home')">← 返回</button>
+        <h2>背诵</h2>
+        <span id="study-progress"></span>
+      </div>
+      <div id="study-content" class="study-content">
+        <div class="word-card">
+          <button id="play-btn" class="play-btn" onclick="playCurrentWord()">
+            <span class="icon">🔊</span>
+            <span class="label">播放</span>
+          </button>
+          <button id="record-btn" class="record-btn" onclick="toggleRecording()">
+            <span class="icon">🎤</span>
+            <span class="label">录音</span>
+          </button>
+          <div id="word-status" class="word-status"></div>
+        </div>
+        <div id="study-buttons" class="study-buttons">
+          <button class="btn fail" onclick="markWord(false)">不会</button>
+          <button class="btn skip" onclick="skipWord()">跳过</button>
+          <button class="btn success" onclick="markWord(true)">会</button>
+        </div>
+      </div>
+      <div id="study-empty" class="study-empty hidden">
+        <p>🎉 恭喜！所有单词都已掌握</p>
+        <button class="btn primary" onclick="showPage('home')">返回首页</button>
+      </div>
+    </div>
+
+    <!-- 添加/编辑单词弹窗 -->
+    <div id="word-modal" class="modal hidden">
+      <div class="modal-content">
+        <h3 id="modal-title">添加单词</h3>
+        <div class="form-group">
+          <label>单词拼写</label>
+          <input type="text" id="word-input" placeholder="请输入英语单词">
+        </div>
+        <div id="word-preview" class="word-preview hidden">
+          <p><strong>中文意义：</strong><span id="word-meaning"></span></p>
+        </div>
+        <div class="modal-buttons">
+          <button class="btn secondary" onclick="closeWordModal()">取消</button>
+          <button class="btn primary" onclick="saveWord()">保存</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 学习统计弹窗 -->
+    <div id="stats-modal" class="modal hidden">
+      <div class="modal-content">
+        <h3>学习完成！</h3>
+        <div class="stats">
+          <p>总单词数：<span id="stat-total">0</span></p>
+          <p>正确：<span id="stat-correct" class="correct">0</span></p>
+          <p>跳过：<span id="stat-skip" class="skip">0</span></p>
+        </div>
+        <button class="btn primary" onclick="closeStatsModal()">完成</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/app.js"></script>
+</body>
+</html>

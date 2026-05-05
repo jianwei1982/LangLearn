@@ -1,0 +1,426 @@
+:root {
+  --primary: #4CAF50;
+  --primary-dark: #388E3C;
+  --secondary: #2196F3;
+  --danger: #f44336;
+  --warning: #FF9800;
+  --success: #4CAF50;
+  --gray: #9E9E9E;
+  --bg: #f5f5f5;
+  --card-bg: #ffffff;
+  --text: #333;
+  --text-light: #666;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+}
+
+#app {
+  max-width: 480px;
+  margin: 0 auto;
+  min-height: 100vh;
+  background: var(--card-bg);
+}
+
+/* 页面切换 */
+.page {
+  display: none;
+  min-height: 100vh;
+}
+
+.page.active {
+  display: flex;
+  flex-direction: column;
+}
+
+/* 首页 */
+#home-page {
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  text-align: center;
+}
+
+#home-page h1 {
+  margin-bottom: 2rem;
+  font-size: 1.5rem;
+}
+
+.menu {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 100%;
+}
+
+/* 按钮样式 */
+.btn {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn.primary {
+  background: var(--primary);
+  color: white;
+}
+
+.btn.primary:hover {
+  background: var(--primary-dark);
+}
+
+.btn.secondary {
+  background: var(--secondary);
+  color: white;
+}
+
+.btn.success {
+  background: var(--success);
+  color: white;
+}
+
+.btn.fail {
+  background: var(--danger);
+  color: white;
+}
+
+.btn.skip {
+  background: var(--gray);
+  color: white;
+}
+
+.btn.back {
+  background: transparent;
+  color: var(--secondary);
+}
+
+.btn.add {
+  background: var(--primary);
+  color: white;
+  padding: 0.5rem 1rem;
+}
+
+/* 通用 header */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+  background: var(--card-bg);
+  border-bottom: 1px solid #eee;
+  position: sticky;
+  top: 0;
+}
+
+.header h2 {
+  font-size: 1.1rem;
+}
+
+/* 单词列表 */
+.words-list {
+  padding: 1rem;
+}
+
+.word-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background: var(--card-bg);
+  border: 1px solid #eee;
+  border-radius: 8px;
+  margin-bottom: 0.5rem;
+}
+
+.word-item .word {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.word-item .meaning {
+  color: var(--text-light);
+  font-size: 0.9rem;
+}
+
+.word-item .actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.word-item .actions button {
+  padding: 0.3rem 0.6rem;
+  font-size: 0.8rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.word-item .actions .edit {
+  background: var(--secondary);
+  color: white;
+}
+
+.word-item .actions .delete {
+  background: var(--danger);
+  color: white;
+}
+
+.word-item .correct-count {
+  font-size: 0.8rem;
+  color: var(--gray);
+}
+
+/* 设置页 */
+.settings-form {
+  padding: 1rem;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 1rem;
+}
+
+.form-group .hint {
+  display: block;
+  margin-top: 0.3rem;
+  font-size: 0.8rem;
+  color: var(--text-light);
+}
+
+/* 背诵页 */
+.study-content {
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+}
+
+.word-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.play-btn {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  border: none;
+  background: linear-gradient(145deg, #4CAF50, #388E3C);
+  color: white;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  box-shadow: 0 4px 15px rgba(76, 175, 80, 0.4);
+  transition: all 0.3s;
+}
+
+.play-btn:hover {
+  transform: scale(1.05);
+}
+
+.record-btn {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  border: none;
+  background: linear-gradient(145deg, #2196F3, #1976D2);
+  color: white;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3rem;
+  box-shadow: 0 4px 15px rgba(33, 150, 243, 0.4);
+  transition: all 0.3s;
+  margin-top: 1rem;
+}
+
+.record-btn:hover {
+  transform: scale(1.05);
+}
+
+.record-btn.recording {
+  background: linear-gradient(145deg, #f44336, #d32f2f);
+  animation: pulse 1s infinite;
+}
+
+.play-btn .icon {
+  font-size: 3rem;
+}
+
+.play-btn .label {
+  font-size: 1.2rem;
+}
+
+.word-status {
+  font-size: 1rem;
+  min-height: 1.5rem;
+}
+
+.word-status.playing {
+  color: var(--primary);
+}
+
+.word-status.success {
+  color: var(--success);
+}
+
+.word-status.fail {
+  color: var(--danger);
+}
+
+.study-buttons {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.study-empty {
+  padding: 2rem;
+  text-align: center;
+}
+
+.study-empty p {
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+}
+
+/* 弹窗 */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+}
+
+.modal.hidden {
+  display: none;
+}
+
+.modal-content {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 360px;
+}
+
+.modal-content h3 {
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.modal-buttons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+.word-preview {
+  padding: 0.75rem;
+  background: #f0f0f0;
+  border-radius: 8px;
+  margin-top: 0.5rem;
+}
+
+/* 统计 */
+.stats {
+  text-align: center;
+  margin: 1rem 0;
+}
+
+.stats p {
+  margin: 0.5rem 0;
+  font-size: 1.1rem;
+}
+
+.stats .correct {
+  color: var(--success);
+  font-weight: bold;
+}
+
+.stats .skip {
+  color: var(--gray);
+  font-weight: bold;
+}
+
+/* 工具类 */
+.hidden {
+  display: none !important;
+}
+
+/* 空状态 */
+.empty {
+  text-align: center;
+  padding: 2rem;
+  color: var(--text-light);
+}
+
+/* 录音状态样式 */
+.recording .play-btn {
+  background: linear-gradient(145deg, #f44336, #d32f2f);
+  animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+/* 响应式 */
+@media (max-width: 480px) {
+  .btn {
+    padding: 0.6rem 1.2rem;
+    font-size: 0.9rem;
+  }
+
+  .play-btn {
+    width: 120px;
+    height: 120px;
+  }
+
+  .play-btn .icon {
+    font-size: 2.5rem;
+  }
+}
