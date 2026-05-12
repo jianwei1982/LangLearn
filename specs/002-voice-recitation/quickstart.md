@@ -1,23 +1,23 @@
-# 快速开始指南: 语音识别背诵功能
+# 快速开始指南: 语音录音背诵功能
 
 **功能**: 002-voice-recitation
-**日期**: 2026-05-05
+**日期**: 2026-05-12
 
 ---
 
 ## 功能概述
 
-语音识别背诵功能允许孩子通过实际开口发音来学习英语单词。点击"发音练习"按钮后：
-1. 系统播放单词标准发音
-2. 用户点击开始录音，再次点击停止
-3. 系统使用语音识别评估发音
-4. 根据相似度给出反馈并更新掌握状态
+语音录音背诵功能允许孩子通过实际开口发音来学习英语单词。流程如下：
+1. 点击"录音"按钮开始录音
+2. 录音过程中，"录音"按钮变为"结束"按钮
+3. 点击"结束"按钮停止录音
+4. 用户通过"会/不会"按钮手动评估自己的发音
 
 ---
 
 ## 测试场景
 
-### 场景 1: 完整的语音识别背诵流程
+### 场景 1: 完整的录音背诵流程
 
 **前置条件**:
 - 应用中已有至少 1 个单词
@@ -25,50 +25,50 @@
 
 **步骤**:
 1. 打开应用，进入背诵页面
-2. 点击"发音练习"按钮
-3. 等待单词发音播放完毕
-4. 再次点击按钮开始录音
-5. 对着麦克风发音（如 "apple"）
-6. 点击按钮停止录音
-7. 观察系统反馈和结果
+2. 点击"录音"按钮
+3. 对着麦克风发音（如 "apple"）
+4. 点击"结束"按钮停止录音
+5. 点击"会"或"不会"按钮评估
 
 **预期结果**:
-- 单词发音正确播放
-- 录音成功开始/停止
-- 语音识别返回结果
-- 根据相似度显示相应反馈（优秀/接近/再试）
-- 正确次数根据结果更新
+- 录音成功开始
+- 按钮从"录音"变为"结束"
+- 录音成功停止
+- 按钮从"结束"恢复为"录音"
+- 点击"会"后正确次数+1，进入下一单词
+- 点击"不会"后正确次数归零，进入下一单词
 
 ---
 
-### 场景 2: 识别失败回退到手动模式
+### 场景 2: 录音过程中跳过
 
 **前置条件**:
-- 语音识别服务不可用或识别失败
+- 正在录音中
 
 **步骤**:
-1. 按照场景1的步骤进行
-2. 触发语音识别失败条件
+1. 开始录音
+2. 点击"跳过"按钮
 
 **预期结果**:
-- 系统显示"没有听清楚"
-- 自动回退到手动模式，显示"会/不会"按钮
-- 用户可手动确认掌握状态
-
----
-
-### 场景 3: 多次重试后跳过
-
-**前置条件**:
-- 设置中最大重试次数为 3
-
-**步骤**:
-1. 连续 3 次发音不准确（相似度 < 50%）
-
-**预期结果**:
-- 第3次识别后自动跳过当前单词
-- 显示跳过提示
+- 录音立即停止
+- 正确次数不变
 - 进入下一个单词
+
+---
+
+### 场景 3: 录音超时自动停止
+
+**前置条件**:
+- 录音超时设置为 60 秒（默认值）
+
+**步骤**:
+1. 开始录音
+2. 不做任何操作，等待 60 秒
+
+**预期结果**:
+- 录音自动停止
+- 按钮恢复为"录音"
+- 提示用户重新录音
 
 ---
 
@@ -78,14 +78,14 @@
 - 应用首次请求麦克风权限
 
 **步骤**:
-1. 首次点击"发音练习"按钮
+1. 首次点击"录音"按钮
 2. 系统弹出权限请求
 
 **预期结果**:
 - iOS: 显示系统权限对话框
 - Android: 显示系统权限对话框
-- 拒绝权限后：显示提示，使用纯手动模式
-- 授予权限后：正常进行语音识别
+- 拒绝权限后：显示提示，引导用户手动评估
+- 授予权限后：正常进行录音
 
 ---
 
@@ -95,10 +95,9 @@
 - 进入设置页面
 
 **步骤**:
-1. 找到语音识别相关设置
-2. 修改"相似度阈值"为 70%
-3. 修改"录音最大时长"为 8 秒
-4. 保存设置
+1. 找到录音相关设置
+2. 修改"录音最大时长"为 30 秒
+3. 保存设置
 
 **预期结果**:
 - 设置成功保存到数据库
@@ -113,7 +112,7 @@
 cd kids_vocab_app
 
 # 获取依赖（需要添加新依赖）
-flutter pub add speech_to_text
+flutter pub add record
 flutter pub add permission_handler
 
 # 获取所有依赖
@@ -131,19 +130,21 @@ flutter run
 lib/
 ├── core/              # 核心工具
 ├── data/              # 数据层
-│   └── datasources/
-│       └── database_helper.dart   # 需扩展设置表
+│   ├── datasources/
+│   │   └── database_helper.dart   # 需扩展设置表
+│   └── services/
+│       └── recording_service.dart # 需新增
 ├── domain/            # 领域层
-│   └── entities/
-│       └── learning_settings.dart # 需扩展
+│   ├── entities/
+│   │   └── recording_session.dart # 需新增
+│   └── usecases/
 ├── presentation/      # 表现层
 │   ├── pages/
-│   │   └── recitation_page.dart   # 需大幅修改
-│   └── providers/
-│       └── recitation_provider.dart # 需大幅修改
-├── services/          # 服务层
-│   ├── tts_service.dart            # 已有
-│   └── speech_recognition_service.dart # 需新增
+│   │   └── recitation_page.dart   # 需修改
+│   ├── providers/
+│   │   └── recording_provider.dart # 需新增
+│   └── widgets/
+│       └── recording_button.dart  # 需新增
 └── main.dart
 ```
 
@@ -156,7 +157,7 @@ lib/
 flutter test test/unit/
 
 # 运行特定测试
-flutter test test/unit/recitation_provider_test.dart
+flutter test test/unit/recording_provider_test.dart
 ```
 
 ---
@@ -167,8 +168,8 @@ flutter test test/unit/recitation_provider_test.dart
 
 ```yaml
 dependencies:
-  speech_to_text: ^7.0.0
-  permission_handler: ^11.3.0
+  record: ^5.0.0
+  permission_handler: ^11.0.0
 ```
 
 ---
@@ -178,10 +179,8 @@ dependencies:
 在 `ios/Runner/Info.plist` 中添加:
 
 ```xml
-<key>NSSpeechRecognitionUsageDescription</key>
-<string>用于识别您的发音来评估单词掌握情况</string>
 <key>NSMicrophoneUsageDescription</key>
-<string>用于录制您的发音</string>
+<string>需要使用麦克风来录制您的发音，以便评估学习效果</string>
 ```
 
 ---

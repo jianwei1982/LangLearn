@@ -595,7 +595,7 @@ function updateRecordButton(recording) {
   const btn = document.getElementById('record-btn');
   if (recording) {
     btn.classList.add('recording');
-    btn.querySelector('.label').textContent = '停止';
+    btn.querySelector('.label').textContent = '结束';
   } else {
     btn.classList.remove('recording');
     btn.querySelector('.label').textContent = '录音';
